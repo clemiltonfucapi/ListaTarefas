@@ -26,6 +26,11 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaVH> 
         this.context = context;
         this.listaTarefas = lista;
     }
+
+    public void setListaTarefas(ArrayList<Tarefa> listaTarefas){
+        this.listaTarefas = listaTarefas;
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }

@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.clemilton.listatarefas.adapter.OnItemClickListener;
 import com.clemilton.listatarefas.adapter.TarefaAdapter;
+import com.clemilton.listatarefas.bd.DbHelper;
+import com.clemilton.listatarefas.bd.TarefaDAO;
 import com.clemilton.listatarefas.model.Tarefa;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -22,17 +24,18 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Tarefa> listaTarefas = new ArrayList<>();
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
+    private TarefaAdapter tarefaAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerView);
         fab= findViewById(R.id.floatingActionButton);
-        //recyclerView.setOnItemClickListener();
+
         preencherLista();
 
 
-        TarefaAdapter tarefaAdapter = new TarefaAdapter(
+        tarefaAdapter = new TarefaAdapter(
                                             getApplicationContext(),
                                             listaTarefas
                                             );
@@ -54,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext()
-                                            ,AdicionarActivity.class);
+                Intent intent = new Intent(getApplicationContext(),AdicionarActivity.class);
                 startActivity(intent);
 
             }
@@ -64,13 +66,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void preencherLista(){
-        for(int i =0 ; i < 30 ; i++) {
-            listaTarefas.add(new Tarefa("corrida"));
-            listaTarefas.add(new Tarefa("Supermercado"));
-            listaTarefas.add(new Tarefa("Fucapi"));
+        TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
 
-        }
+        listaTarefas = tarefaDAO.listarTarefas();
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+/*
+        TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
+        listaTarefas = tarefaDAO.listarTarefas();
+        tarefaAdapter.setListaTarefas(listaTarefas);
+        tarefaAdapter.notifyDataSetChanged();*/
     }
 }
