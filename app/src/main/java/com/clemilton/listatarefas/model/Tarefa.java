@@ -1,10 +1,14 @@
 package com.clemilton.listatarefas.model;
 
 
-public class Tarefa {
+import java.io.Serializable;
+
+public class Tarefa implements Serializable {
     private Long id;
     private String tarefa;
+    public Tarefa(){
 
+    }
     public Tarefa(String tarefa) {
         this.tarefa = tarefa;
     }

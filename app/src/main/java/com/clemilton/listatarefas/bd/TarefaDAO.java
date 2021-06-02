@@ -50,4 +50,30 @@ public class TarefaDAO {
         }
         return tarefas;
     }
+
+    public boolean deletar(Tarefa tarefa){
+        try{
+            /* */
+            String[] args = {tarefa.getId().toString()};
+            escreve.delete(DbHelper.TABELA_TAREFAS,"id=?",args);
+        }catch(Exception e){
+            Log.e("ERRO_BD","Erro ao salvar tarefa: "+e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    // Método para atualizar -> os dados da tarefa ja vem atualizados
+    public boolean atualizar(Tarefa tarefa){
+        ContentValues cv = new ContentValues();
+        cv.put("nome",tarefa.getTarefa());
+
+        try{
+            String[] args = {tarefa.getId().toString()};
+            escreve.update(DbHelper.TABELA_TAREFAS,cv, "id=?",args);
+        }catch (Exception e){
+            Log.e("ERRO_BD","Erro ao atualizar a tarefa: "+e.getMessage());
+            return false;
+        }
+        return true;
+    }
 }

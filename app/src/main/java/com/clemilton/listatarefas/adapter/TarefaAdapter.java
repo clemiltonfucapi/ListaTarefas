@@ -22,6 +22,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaVH> 
     private ArrayList<Tarefa> listaTarefas;
     private OnItemClickListener listener;
 
+
     public TarefaAdapter(Context context, ArrayList<Tarefa> lista){
         this.context = context;
         this.listaTarefas = lista;
@@ -83,6 +84,17 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaVH> 
                         //executa o método implementado na Activity
                         listener.onItemClick(position);
                     }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if(listener!=null) {
+                        int position = getBindingAdapterPosition();
+                        listener.onLongClick(position);
+                    }
+                    return true;
                 }
             });
 
