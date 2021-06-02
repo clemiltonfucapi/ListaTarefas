@@ -67,19 +67,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void preencherLista(){
         TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
-
         listaTarefas = tarefaDAO.listarTarefas();
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-/*
         TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
         listaTarefas = tarefaDAO.listarTarefas();
         tarefaAdapter.setListaTarefas(listaTarefas);
-        tarefaAdapter.notifyDataSetChanged();*/
+        tarefaAdapter.notifyDataSetChanged();
     }
 }
