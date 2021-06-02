@@ -1,10 +1,12 @@
 package com.clemilton.listatarefas;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -43,9 +45,39 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position) {
                 Tarefa tarefa = listaTarefas.get(position);
-                Toast.makeText(getApplicationContext(),
-                                tarefa.getTarefa() + position,
-                                Toast.LENGTH_SHORT).show();
+
+                //Enviar tarefa para tela Adicionar tarefa
+                Intent intent = new Intent(getApplicationContext(),AdicionarActivity.class);
+                intent.putExtra("tarefa",tarefa);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(int position) {
+                final Tarefa tarefa = listaTarefas.get(position);
+                //Criar um AlertDialog
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                // Configurar mensagens
+                dialog.setTitle("Confirmar exclusão");
+                dialog.setMessage("Deseja excluir a tarefa: "+tarefa.getTarefa() + "?");
+
+                //listener p/ opção Sim
+                dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
+                        if(tarefaDAO.deletar(tarefa)){
+                            preencherLista();
+                            tarefaAdapter.setListaTarefas(listaTarefas);
+                            tarefaAdapter.notifyDataSetChanged();
+                            Toast.makeText(getApplicationContext(),"Sucesso ao exlcuir tarefa",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Erro ao excluir tarefa!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                dialog.setNegativeButton("Não",null);
+                dialog.create().show();
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

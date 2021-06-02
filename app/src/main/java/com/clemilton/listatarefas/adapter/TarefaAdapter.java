@@ -22,6 +22,7 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaVH> 
     private ArrayList<Tarefa> listaTarefas;
     private OnItemClickListener listener;
 
+
     public TarefaAdapter(Context context, ArrayList<Tarefa> lista){
         this.context = context;
         this.listaTarefas = lista;
@@ -53,9 +54,9 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaVH> 
         //recuperando a tarefa
         Tarefa tarefa = listaTarefas.get(position);
         //holder representa um elemento da Recycler
-
         holder.textTarefa.setText(tarefa.getTarefa());
-
+        holder.textData.setText(tarefa.getData());
+        holder.textHora.setText(tarefa.getHora());
     }
 
     @Override
@@ -69,11 +70,17 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaVH> 
     *   - Representa um elemento da RecyclerView */
     public class TarefaVH extends RecyclerView.ViewHolder {
         TextView textTarefa;
+        TextView textData;
+        TextView textHora;
+
 
         public TarefaVH(@NonNull View itemView) {
             /* itemView: representa item_tarefa.xml */
             super(itemView);
+
             textTarefa = itemView.findViewById(R.id.nomeTarefa);
+            textData = itemView.findViewById(R.id.textData);
+            textHora = itemView.findViewById(R.id.textHora);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,6 +90,17 @@ public class TarefaAdapter extends RecyclerView.Adapter<TarefaAdapter.TarefaVH> 
                         //executa o método implementado na Activity
                         listener.onItemClick(position);
                     }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if(listener!=null) {
+                        int position = getBindingAdapterPosition();
+                        listener.onLongClick(position);
+                    }
+                    return true;
                 }
             });
 
